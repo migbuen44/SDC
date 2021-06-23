@@ -1,7 +1,49 @@
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS style;
+DROP TABLE IF EXISTS sku;
 
+CREATE TABLE product (
+  id SERIAL,
+  name VARCHAR,
+  slogan VARCHAR,
+  description VARCHAR,
+  category VARCHAR,
+  default_price VARCHAR,
+  PRIMARY KEY(id)
+);
 
-CREATE TABLE IF NOT EXISTS product (id SERIAL, name varchar, slogan varchar, description varchar, category varchar, default_price varchar);
-CREATE TABLE IF NOT EXISTS style (id SERIAL, product_id integer, sale_price integer, original_price integer, default boolean);
-CREATE TABLE IF NOT EXISTS size( )
+CREATE TABLE style (
+  id SERIAL,
+  product_id INTEGER,
+  sale_price INTEGER,
+  original_price INTEGER,
+  default_style BOOLEAN,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_product
+    FOREIGN KEY(product_id)
+      REFERENCES product(id)
+);
 
-/COPY product FROM './sdc_raw_files/product.csv' DELIMITER ',' CSV HEADER;
+CREATE TABLE sku(
+  id SERIAL,
+  style_id INTEGER,
+  size VAR(5),
+  quantity INTEGER,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_style
+    FOREIGN KEY(style_id)
+      REFERENCES style(id)
+);
+
+CREATE TABLE related_products(
+  id SERIAL,
+  current_product_id INT,
+  related_product_id INT,
+  PRIMARY KEY(id)
+  CONSTRAINT fk_product
+    FOREIGN KEY(current_product_id),
+    FOREIGN KEY(related_product_id),
+      REFERENCES style(id)
+);
+
+-- /COPY product FROM './sdc_raw_files/product.csv' DELIMITER ',' CSV HEADER;

@@ -7,4 +7,10 @@ pool.connect((err) => {
   err ? console.error(err) : console.log('Connected to database!');
 });
 
+// pool.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
+//   console.log(err ? err.stack : res.rows[0].message);
+//   pool.end();
+// //   err ? console.error(err) : console.log('Connected to database!');
+// });
+
 module.exports = pool;
