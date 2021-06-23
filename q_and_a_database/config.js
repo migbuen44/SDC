@@ -1,7 +1,7 @@
 module.exports = {
   user: 'miguelbuenviaje',
-  host: 'localhost:3001',
+  host: 'localhost',
   database: 'qanda',
   password: '',
   port: 5432
-}
+};

@@ -1,12 +1,13 @@
 const { Pool } = require('pg');
-const config = require('./config.js')
+const config = require('./config.js');
 
 const pool = new Pool(config);
 
-pool.connect((err) => {
+// console.log('database connected!');
+pool.connect(err => {
   if (err) {
-    throw err;
+    console.log(err);
   } else {
-    console.log('database connected!');
+    console.log('database connected');
   }
 })

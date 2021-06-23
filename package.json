@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test-coverage": "jest --coverage",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "build-db": "psql -U miguelbuenviaje -f QANDA.sql"
   },
   "repository": {
     "type": "git",
