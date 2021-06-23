@@ -1,10 +1,10 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
+const config = require('../config/config.js');
 
-const client = new Client();
+const pool = new Pool({ config });
 
-client.connect();
-
-client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-  console.log(err ? err.stack : res.rows[0].message);
-  client.end();
+pool.connect((err) => {
+  err ? console.error(err) : console.log('Connected to database!');
 });
+
+module.exports = pool;
