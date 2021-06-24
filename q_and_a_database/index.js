@@ -10,4 +10,16 @@ pool.connect(err => {
   } else {
     console.log('database connected');
   }
-})
+});
+
+const getQuestions = (product_id, page, count, callback) => {
+  let queryString =  `SELECT * FROM questions WHERE product_id = ${product_id} limit ${count}`;//add index to product_id in postgres
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+};

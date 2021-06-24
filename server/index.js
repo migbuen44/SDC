@@ -14,7 +14,7 @@ app.use('/api', router);
 
 app.route('/api/qa/questions')
   .get((req, res) => {
-    const {product_id, page, count} = req.query;
+    const { product_id, page, count } = req.query;
     db.getQuestions(product_id, page, count, (err, result) => {
       if (err) {
         res.send('error');
@@ -24,7 +24,6 @@ app.route('/api/qa/questions')
     });
   })
   .post((req, res) => {
-
   });
 
 app.route('/api/questions/:question_id/answers')
