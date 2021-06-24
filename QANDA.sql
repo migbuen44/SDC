@@ -50,7 +50,7 @@ COPY questions_temp FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/questions.csv' 
 
 INSERT INTO users (name, email) SELECT DISTINCT name, email FROM questions_temp;
 
--- INSERT INTO questions (product_id, body, date_written, reported, helpful, userId)
+-- INSERT INTO questions (product_id, body, date_written, reported, helpful, userId) SELECT (product_id, body, date_written, reported, helpful, 1)
 
 -- id serial PRIMARY KEY,
 --   product_id INT,
