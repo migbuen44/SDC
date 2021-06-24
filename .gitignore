@@ -2,3 +2,4 @@ node_modules
 coverage
 config/config.js
 R&R_CSV
+config.js
