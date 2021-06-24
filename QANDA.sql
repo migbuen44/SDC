@@ -5,7 +5,8 @@ CREATE DATABASE qanda;
 CREATE TABLE users (
   id serial PRIMARY KEY,
   name VARCHAR,
-  email VARCHAR
+  email VARCHAR,
+  UNIQUE (name, email)
 );
 
 CREATE TABLE questions (
@@ -46,3 +47,15 @@ CREATE TABLE questions_temp (
 );
 
 COPY questions_temp FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/questions.csv' DELIMITER ',' CSV HEADER;
+
+INSERT INTO users (name, email) SELECT DISTINCT name, email FROM questions_temp;
+
+-- INSERT INTO questions (product_id, body, date_written, reported, helpful, userId)
+
+-- id serial PRIMARY KEY,
+--   product_id INT,
+--   body VARCHAR,
+--   date_written BIGINT,
+--   userId INT REFERENCES users (id),
+--   reported INT,
+--   helpful INT
