@@ -7,7 +7,7 @@
     "test": "jest",
     "test-coverage": "jest --coverage",
     "start": "nodemon server/index.js",
-    "seedProducts": "psql postgres -d atelier-raw -f database/ETL.sql && node database/ETL_Products.js"
+    "seedProducts": "psql postgres -d atelier-raw -f database/overview.sql && node database/overview_seeder/index.js"
   },
   "repository": {
     "type": "git",

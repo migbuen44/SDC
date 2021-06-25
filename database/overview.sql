@@ -17,7 +17,7 @@ CREATE TABLE styles (
   id SERIAL,
   product_id INTEGER,
   name VARCHAR(250),
-  sale_price INTEGER,
+  sale_price VARCHAR,
   original_price INTEGER,
   default_style BOOLEAN,
   PRIMARY KEY(id),

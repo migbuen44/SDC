@@ -2,42 +2,38 @@ const { Pool } = require('pg');
 const copyFrom = require('pg-copy-streams').from;
 const fs = require('fs');
 const path = require('path');
-const config = require('../config/config.js');
+const config = require('../../config/config.js');
 
-const pool = new Pool(config);
-
-pool.connect((err, client, release) => {
+module.exports = (err, client, release) => {
   if (err) { console.log(err); }
-  const rawProductsPath = path.join(__dirname, '../raw_files/product.csv');
-  const rawDataPathStyles = path.join(__dirname, '../raw_files/styles.csv');
+  const productCsvPath = path.join(__dirname, '../../raw_files/product.csv');
   const rawDataPathSkus = path.join(__dirname, '../raw_files/skus.csv');
   const rawDataPathRelated = path.join(__dirname, '../raw_files/related');
-  const stylesCopyQuery = `COPY styles FROM '${rawDataPathStyles}' DELIMITER ',' CSV HEADER;`;
   const skuCopyQuery = `COPY product FROM '${rawDataPathSkus}' DELIMITER ',' CSV HEADER;`;
   const relatedCopyQuery = `COPY styles FROM '${rawDataPathRelated}' DELIMITER ',' CSV HEADER;`;
 
-
+  const readFileStream = fs.createReadStream(productCsvPath);
   const stream = client.query(copyFrom('COPY product FROM STDIN CSV HEADER;'));
-  const readFileStream = fs.createReadStream(rawProductsPath);
 
   readFileStream.on('error', (error) => console.log('err read file stream', error));
-  stream.on('error', (error) => console.log('err stream', error));
-  stream.on('end', () => {
-    console.log('tables seeded');
-  });
 
   readFileStream.on('open', () => {
-    console.log('readfilestream open');
+    console.log('product readfilestream open');
     console.time('seedTime');
     readFileStream.pipe(stream);
   });
 
   readFileStream.on('close', () => {
-    console.log('finished reading files');
+    console.log('product finished reading files');
     console.timeEnd('seedTime');
-    release();
   });
-});
+
+  stream.on('error', (error) => console.log('err stream', error));
+  stream.on('end', () => {
+    console.log('tables seeded');
+    release(); // close after write process ends
+  });
+};
 
 // module.exports = {
 //   createProductTable: () => {
