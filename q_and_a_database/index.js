@@ -12,14 +12,37 @@ pool.connect(err => {
   }
 });
 
-const getQuestions = (product_id, page, count, callback) => {
-  let queryString =  `SELECT * FROM questions WHERE product_id = ${product_id} limit ${count}`;//add index to product_id in postgres
+const getQuestions = (product_id, count, callback) => {
+  let queryString = `SELECT * FROM questions WHERE product_id = ${product_id} limit ${count}`;//add index to product_id in postgres
 
   pool.query(queryString, (err, result) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, result);
+      const resultRows = result.rows;
+      callback(null, resultRows);
     }
   });
+};
+
+const getAnswers = (question_id, count, callback) => {
+  let queryString = `SELECT * FROM answers WHERE question_id = ${question_id} limit ${count}`;
+
+  pool.query(queryString, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      const resultRows = result.rows;
+      callback(null, resultRows);
+    }
+  });
+};
+
+const addQuestion = (product_id, body, name, email) => {
+  // let queryString = `INSERT `
+};
+
+module.exports = {
+  getQuestions,
+  getAnswers
 };

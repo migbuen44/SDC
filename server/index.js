@@ -12,27 +12,27 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use('/api', router);
 
-app.route('/api/qa/questions')
-  .get((req, res) => {
-    const { product_id, page, count } = req.query;
-    db.getQuestions(product_id, page, count, (err, result) => {
-      if (err) {
-        res.send('error');
-      } else {
-        res.send(result);
-      }
-    });
-  })
-  .post((req, res) => {
-  });
+// app.route('/api/qa/questions')
+//   .get((req, res) => {
+//     const { product_id, page, count } = req.query;
+//     db.getQuestions(product_id, page, count, (err, result) => {
+//       if (err) {
+//         res.send('error');
+//       } else {
+//         res.send(result);
+//       }
+//     });
+//   })
+//   .post((req, res) => {
+//   });
 
-app.route('/api/questions/:question_id/answers')
-  .get((req, res) => {
+// app.route('/api/questions/:question_id/answers')
+//   .get((req, res) => {
 
-  })
-  .post((req, res) => {
+//   })
+//   .post((req, res) => {
 
-  });
+//   });
 
 // app.route('/api/')
 
