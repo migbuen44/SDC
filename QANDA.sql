@@ -3,38 +3,44 @@ CREATE DATABASE qanda;
 \c qanda;
 
 CREATE TABLE questions (
-  id serial PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   product_id INT,
   body VARCHAR,
   date_written BIGINT,
   name VARCHAR,
   email VARCHAR,
   reported INT,
-  helpful INT
+  helpfulness INT
 );
 
 CREATE TABLE answers (
-  id serial PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   question_id INT REFERENCES questions (id),
   body VARCHAR,
   date_written BIGINT,
   name VARCHAR,
   email VARCHAR,
   reported INT,
-  helpful INT
+  helpfulness INT
 );
 
 CREATE TABLE answers_photos (
-  id serial PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   answer_id INT REFERENCES answers (id),
   url VARCHAR
 );
 
 COPY questions FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/questions.csv' DELIMITER ',' CSV HEADER;
 
+SELECT setval('questions_id_seq', (SELECT MAX(id)+1 FROM questions), false);
+
 COPY answers FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers.csv' DELIMITER ',' CSV HEADER;
 
+SELECT setval('answers_id_seq', (SELECT MAX(id)+1 FROM answers), false);
+
 COPY answers_photos FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+SELECT setval('answers_photos_id_seq', (SELECT MAX(id)+1 FROM answers_photos), false);
 
 -- CREATE DATABASE qanda;
 
@@ -54,7 +60,7 @@ COPY answers_photos FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers_photos.
 --   date_written BIGINT,
 --   userId INT REFERENCES users (id),
 --   reported INT,
---   helpful INT
+--   helpfulness INT
 -- );
 
 -- CREATE TABLE answers (
@@ -64,7 +70,7 @@ COPY answers_photos FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers_photos.
 --   date_written BIGINT,
 --   userId INT REFERENCES users (id),
 --   reported INT,
---   helpful INT
+--   helpfulness INT
 -- );
 
 -- CREATE TABLE answers_photos (
@@ -81,7 +87,7 @@ COPY answers_photos FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers_photos.
 --   name VARCHAR,
 --   email VARCHAR,
 --   reported INT,
---   helpful INT
+--   helpfulness INT
 -- );
 
 -- COPY questions_temp FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/questions.csv' DELIMITER ',' CSV HEADER;

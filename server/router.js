@@ -18,6 +18,17 @@ router
         res.send(result);
       }
     });
+  })
+  .post((req, res) => {
+    const { product_id, body, name, email } = req.body;
+
+    db.addQuestion(product_id, body, name, email, (err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send();
+      }
+    });
   });
 
 router
@@ -26,6 +37,9 @@ router
     let { question_id } = req.params;
     let { count } = req.query;
 
+    if (!count) {
+      count = 4;
+    }
     db.getAnswers(question_id, count, (err, results) => {
       if (err) {
         res.send('error');
