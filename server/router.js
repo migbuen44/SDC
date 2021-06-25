@@ -22,11 +22,11 @@ router
   .post((req, res) => {
     const { product_id, body, name, email } = req.body;
 
-    db.addQuestion(product_id, body, name, email, (err) => {
+    db.addQuestion(product_id, body, name, email, (err, results) => {
       if (err) {
         res.send(err);
       } else {
-        res.send();
+        res.send(results);
       }
     });
   });
@@ -43,6 +43,28 @@ router
     db.getAnswers(question_id, count, (err, results) => {
       if (err) {
         res.send('error');
+      } else {
+        res.send(results);
+      }
+    });
+  })
+  .post((req, res) => {
+    const { question_id } = req.params;
+    let { body, date_written, name, email, photos } = req.body;
+    let dt = new Date();
+    dt = dt.getTime();
+    // console.log(dt);
+    if (!date_written) {
+      let dt = new Date();
+      dt = dt.getTime();
+      date_written = dt;
+    }
+    if (!Array.isArray(photos)) {
+      photos = [];
+    }
+    db.addAnswer(question_id, body, date_written, name, email, photos, (err, results) => {
+      if (err) {
+        res.send(err);
       } else {
         res.send(results);
       }

@@ -47,25 +47,47 @@ const addQuestion = (product_id, body, name, email, callback) => {
     if (err) {
       callback(err);
     } else {
-      const resultRows = result.rows;
-      callback(null, resultRows);
+      // const resultRows = result.rows;
+      callback(null, 'Question added!');
     }
   });
 };
 
-const addAnswer = (question_id, body, date_written, name, email, callback) => {
+const addAnswer = (question_id, body, date_written, name, email, photos, callback) => {
   let queryString = `INSERT INTO answers (question_id, body, date_written,
     name, email, reported, helpfulness) VALUES (${question_id}, '${body}',
-    ${date_written}, '${name}', '${email}', 0, 0);`;
+    ${date_written}, '${name}', '${email}', 0, 0) RETURNING id;`;
 
   pool.query(queryString, (err, result) => {
     if (err) {
       callback(err);
     } else {
-      const resultRows = result.rows;
-      callback(null, resultRows);
+      const answer_id = result.rows[0].id;
+
+      queryString = 'INSERT INTO answers_photos (answer_id, url) VALUES ($1, $2)';
+
+      photos.forEach((photo) => {
+        pool.query(queryString, [answer_id, photo], (err) => {
+          if (err) {
+            callback(err);
+          }
+        });
+      });
+      callback(null, 'Answer added!');
     }
   });
+
+  // console.log('answer_id: ', answer_id);
+
+  // queryString = 'INSERT INTO answers_photos (answer_id, url) VALUES ($1, $2)';
+
+  // photos.forEach((photo) => {
+  //   pool.query(queryString, [answer_id, photo], (err) => {
+  //     if (err) {
+  //       callback(err);
+  //     }
+  //   });
+  // });
 };
 
 module.exports = {
