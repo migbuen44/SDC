@@ -6,7 +6,7 @@ const db = require('../q_and_a_database/index.js');
 router
   .route('/qa/questions')
   .get((req, res) => {
-    let { product_id, page, count } = req.query;
+    let { product_id, count } = req.query;
 
     if (!count) {
       count = 4;
@@ -16,6 +16,21 @@ router
         res.send('error');
       } else {
         res.send(result);
+      }
+    });
+  });
+
+router
+  .route('/qa/questions/:question_id/answers')
+  .get((req, res) => {
+    let { question_id } = req.params;
+    let { count } = req.query;
+
+    db.getAnswers(question_id, count, (err, results) => {
+      if (err) {
+        res.send('error');
+      } else {
+        res.send(results);
       }
     });
   });
