@@ -1,6 +1,7 @@
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS style;
-DROP TABLE IF EXISTS sku;
+DROP TABLE IF EXISTS related_products CASCADE;
+DROP TABLE IF EXISTS skus CASCADE;
+DROP TABLE IF EXISTS styles CASCADE;
+DROP TABLE IF EXISTS product;
 
 CREATE TABLE product (
   id SERIAL,
@@ -12,9 +13,10 @@ CREATE TABLE product (
   PRIMARY KEY(id)
 );
 
-CREATE TABLE style (
+CREATE TABLE styles (
   id SERIAL,
   product_id INTEGER,
+  name VARCHAR(250),
   sale_price INTEGER,
   original_price INTEGER,
   default_style BOOLEAN,
@@ -22,28 +24,33 @@ CREATE TABLE style (
   CONSTRAINT fk_product
     FOREIGN KEY(product_id)
       REFERENCES product(id)
+      ON UPDATE CASCADE
+
 );
 
-CREATE TABLE sku(
+CREATE TABLE skus (
   id SERIAL,
   style_id INTEGER,
-  size VAR(5),
+  size VARCHAR(5),
   quantity INTEGER,
   PRIMARY KEY(id),
   CONSTRAINT fk_style
     FOREIGN KEY(style_id)
-      REFERENCES style(id)
+      REFERENCES styles(id)
+      ON UPDATE CASCADE
 );
 
-CREATE TABLE related_products(
+CREATE TABLE related_products (
   id SERIAL,
   current_product_id INT,
   related_product_id INT,
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
   CONSTRAINT fk_product
-    FOREIGN KEY(current_product_id),
-    FOREIGN KEY(related_product_id),
-      REFERENCES style(id)
+    FOREIGN KEY(current_product_id)
+      REFERENCES styles(id)
+      ON UPDATE CASCADE,
+  CONSTRAINT fk_relatedProduct
+    FOREIGN KEY(related_product_id)
+      REFERENCES styles(id)
+      ON UPDATE CASCADE
 );
-
--- /COPY product FROM './sdc_raw_files/product.csv' DELIMITER ',' CSV HEADER;

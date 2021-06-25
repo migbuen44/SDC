@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test-coverage": "jest --coverage",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "seedProducts": "psql postgres -d atelier-raw -f database/ETL.sql && node database/ETL_Products.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "express": "^4.17.1",
     "morgan": "^1.10.0",
     "pg": "^8.6.0",
+    "pg-copy-streams": "^5.1.1",
     "postgres": "1.0.2"
   },
   "devDependencies": {
