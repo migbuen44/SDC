@@ -1,39 +1,38 @@
-const { Pool } = require('pg');
 const copyFrom = require('pg-copy-streams').from;
 const fs = require('fs');
 const path = require('path');
-const config = require('../../config/config.js');
 
-module.exports = (err, client, release) => {
-  if (err) { console.log(err); }
-  const productCsvPath = path.join(__dirname, '../../raw_files/product.csv');
-  const rawDataPathSkus = path.join(__dirname, '../raw_files/skus.csv');
-  const rawDataPathRelated = path.join(__dirname, '../raw_files/related');
-  const skuCopyQuery = `COPY product FROM '${rawDataPathSkus}' DELIMITER ',' CSV HEADER;`;
-  const relatedCopyQuery = `COPY styles FROM '${rawDataPathRelated}' DELIMITER ',' CSV HEADER;`;
+function seedProducts(err, client, release) {
+  return new Promise((resolve, reject) => {
+    const productCsvPath = path.join(__dirname, '../../raw_files/product.csv');
+    const readFileStream = fs.createReadStream(productCsvPath);
+    const stream = client.query(copyFrom('COPY product FROM STDIN CSV HEADER;'));
 
-  const readFileStream = fs.createReadStream(productCsvPath);
-  const stream = client.query(copyFrom('COPY product FROM STDIN CSV HEADER;'));
+    readFileStream.on('error', reject);
 
-  readFileStream.on('error', (error) => console.log('err read file stream', error));
+    readFileStream.on('open', () => {
+      console.log('readfilestream-products open');
+      console.time('seedTime-products');
+      readFileStream.pipe(stream);
+    });
 
-  readFileStream.on('open', () => {
-    console.log('product readfilestream open');
-    console.time('seedTime');
-    readFileStream.pipe(stream);
+    stream.on('finish', () => {
+      console.timeEnd('seedTime-products');
+      console.log('COMPLETE: product table seeded');
+      // release(); // close after write process ends
+      resolve();
+      return client;
+    });
+
+    readFileStream.on('close', () => {
+      console.log('readfilestream-products closed');
+    });
+
+    stream.on('error', reject);
   });
+}
 
-  readFileStream.on('close', () => {
-    console.log('product finished reading files');
-    console.timeEnd('seedTime');
-  });
-
-  stream.on('error', (error) => console.log('err stream', error));
-  stream.on('end', () => {
-    console.log('tables seeded');
-    release(); // close after write process ends
-  });
-};
+module.exports = seedProducts;
 
 // module.exports = {
 //   createProductTable: () => {

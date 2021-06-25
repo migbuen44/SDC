@@ -7,7 +7,7 @@
     "test": "jest",
     "test-coverage": "jest --coverage",
     "start": "nodemon server/index.js",
-    "seedProducts": "psql postgres -d atelier-raw -f database/overview.sql && node database/overview_seeder/index.js"
+    "seed": "psql postgres -d atelier-raw -f database/overview.sql && node database/overview_seeder/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/CodeBase-U-S/SDC#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "csv": "^5.5.0",
     "express": "^4.17.1",
