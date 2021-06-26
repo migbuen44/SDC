@@ -91,10 +91,24 @@ const addQuestionHelpful = (question_id, callback) => {
   });
 };
 
+const addAnswerHelpful = (answer_id, callback) => {
+  let queryString =  `UPDATE answers SET helpfulness = helpfulness + 1
+    WHERE id = ${answer_id}`;
+
+  pool.query(queryString, (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, 'Answer marked helpful!');
+    }
+  });
+};
+
 module.exports = {
   getQuestions,
   getAnswers,
   addQuestion,
   addAnswer,
-  addQuestionHelpful
+  addQuestionHelpful,
+  addAnswerHelpful
 };

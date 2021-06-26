@@ -86,4 +86,18 @@ router.put('/qa/questions/:question_id/helpful', (req, res) => {
   });
 });
 
+router.put('/qa/answers/:answer_id/helpful', (req, res) => {
+  let { answer_id } = req.params;
+  if (!answer_id) {
+    res.send('error');
+  }
+  db.addAnswerHelpful(answer_id, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
 module.exports = router;
