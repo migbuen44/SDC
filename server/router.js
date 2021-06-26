@@ -71,9 +71,19 @@ router
     });
   });
 
-
-  // .get('/o', controllers.overview.get)
-  // .get('/q', controllers.qAnda.get)
-  // .get('/r', controllers.reviews.get);
+router.put('/qa/questions/:question_id/helpful', (req, res) => {
+  // console.log('req.body in helpful put: ', req.body);
+  let { question_id } = req.params;
+  if (!question_id) {
+    res.send('error');
+  }
+  db.addQuestionHelpful(question_id, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(results);
+    }
+  });
+});
 
 module.exports = router;

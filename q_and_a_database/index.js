@@ -76,23 +76,25 @@ const addAnswer = (question_id, body, date_written, name, email, photos, callbac
       callback(null, 'Answer added!');
     }
   });
+};
 
-  // console.log('answer_id: ', answer_id);
+const addQuestionHelpful = (question_id, callback) => {
+  let queryString =  `UPDATE questions SET helpfulness = helpfulness + 1
+    WHERE id = ${question_id}`;
 
-  // queryString = 'INSERT INTO answers_photos (answer_id, url) VALUES ($1, $2)';
-
-  // photos.forEach((photo) => {
-  //   pool.query(queryString, [answer_id, photo], (err) => {
-  //     if (err) {
-  //       callback(err);
-  //     }
-  //   });
-  // });
+  pool.query(queryString, (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, 'Question marked helpful!');
+    }
+  });
 };
 
 module.exports = {
   getQuestions,
   getAnswers,
   addQuestion,
-  addAnswer
+  addAnswer,
+  addQuestionHelpful
 };
