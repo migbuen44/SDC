@@ -100,4 +100,18 @@ router.put('/qa/answers/:answer_id/helpful', (req, res) => {
   });
 });
 
+router.put('/qa/questions/:question_id/report', (req, res) => {
+  let { question_id } = req.params;
+  if (!question_id) {
+    res.send('error');
+  }
+  db.reportQuestion(question_id, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
 module.exports = router;

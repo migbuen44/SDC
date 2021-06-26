@@ -104,11 +104,25 @@ const addAnswerHelpful = (answer_id, callback) => {
   });
 };
 
+const reportQuestion = (question_id, callback) => {
+  let queryString = `UPDATE questions SET reported = 1 WHERE
+    id = ${question_id}`;
+
+  pool.query(queryString, (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, 'Question reported!');
+    }
+  });
+};
+
 module.exports = {
   getQuestions,
   getAnswers,
   addQuestion,
   addAnswer,
   addQuestionHelpful,
-  addAnswerHelpful
+  addAnswerHelpful,
+  reportQuestion
 };
