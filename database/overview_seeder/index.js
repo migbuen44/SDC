@@ -1,26 +1,31 @@
 const { Pool } = require('pg');
-const config = require('../../config/config.js');
-const seedProducts = require('./seed_products.js');
-const seedStyles = require('./seed_styles.js');
+const config = require('../../config/config');
+const seedProducts = require('./seed_products');
+const seedFeatures = require('./seed_features');
+const seedStyles = require('./seed_styles');
+const seedPhotos = require('./seed_photos');
+const seedSkus = require('./seed_skus');
+const seedRelated = require('./seed_related');
 
 const pool = new Pool(config);
 
 pool.connect((err, client, release) => {
-  seedProducts(err, client, release)
+  seedProducts(err, client)
     .then(() => {
-      seedStyles(err, client, release);
-    })
-    .catch((error) => console.log(error));
-})
-
-
-
-  // pool.connect()
-  // .then((client) => {
-  //   seedProducts(client)
-  //     .then((client2) => {
-  //       seedStyles(client2);
-  //     })
-  //     .catch((err) => console.log(err));
-  // })
-  // .catch((err) => console.log(err));
+      // seedFeatures(err, client)
+      //   .then(() => {
+          seedStyles(err, client)
+            .then(() => {
+              seedPhotos(err, client)
+              // seedSkus(err, client)
+                // .then(() => {
+                //   seedRelated(err, client, release);
+                // })
+                .catch((error) => {
+                  console.log(error);
+                  pool.end();
+                // });
+            });
+        });
+    });
+});
