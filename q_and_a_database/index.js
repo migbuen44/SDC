@@ -33,7 +33,27 @@ const getAnswers = (question_id, count, callback) => {
       callback(err);
     } else {
       const resultRows = result.rows;
-      callback(null, resultRows);
+      // callback(null, resultRows);
+      //go through each answer
+        //get id
+        //select all urls in answer_photos where id = answer id
+        //answer.photos = result of
+
+      let iterateResultAsync = async () => {
+        for (let answer of resultRows) {
+        // console.log('answer id: ', answer.id);
+        queryString = `SELECT url FROM answers_photos WHERE answer_id = ${answer.id}`;
+        let result2 = await pool.query(queryString)
+        answer.photos = result2.rows;
+      };
+
+      // console.log('result Rows: ', resultRows);
+      };
+
+      iterateResultAsync()
+        .then(() => {
+          callback(null, resultRows);
+        });
     }
   });
 };
