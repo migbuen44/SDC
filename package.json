@@ -7,7 +7,8 @@
     "test": "jest",
     "test-coverage": "jest --coverage",
     "start": "nodemon server/index.js",
-    "seed": "psql postgres -d atelier-raw -f database/overview.sql && node database/overview_seeder/index.js"
+    "seed": "psql postgres -d atelier-raw -f database/overview.sql && node database/overview_seeder/index.js",
+    "reset": "psql postgres -d atelier-raw -f ETL/reset.sql && node ETL/load.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
     "@fast-csv/format": "^4.3.5",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
-    "csv": "^5.5.0",
+    "csv-writer": "^1.6.0",
     "express": "^4.17.1",
     "fast-csv": "^4.3.6",
     "line-input-stream": "^1.0.1",

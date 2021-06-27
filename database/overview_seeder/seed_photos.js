@@ -10,15 +10,15 @@ const seedPhotos = (err, client) => new Promise((resolve, reject) => {
   const readFileStream = fs.createReadStream(photosCsvPath);
   const stream = client.query(copyFrom('COPY photos FROM STDIN CSV HEADER'));
 
-  const cleanse = csv2.format({ headers: true, quoteColumns: true, quoteHeaders: false });
+  // const cleanse = csv2.format({ headers: true, quoteColumns: true, quoteHeaders: false });
 
-  cleanse.on('data', (data) => {
-    console.log('data', data.toString());
-  })
-    // .parseStream({ headers: true })
-    // .transform((data) => ({
-    //   url: data.url.toUpperCase(),
-    // }));
+  // cleanse.on('data', (data) => {
+  //   console.log('data', data.toString());
+  // })
+  //   // .parseStream({ headers: true })
+  //   // .transform((data) => ({
+  //   //   url: data.url.toUpperCase(),
+  //   // }));
 
   readFileStream.on('error', (error) => {
     console.log('error in photos readStream', error);
@@ -26,8 +26,7 @@ const seedPhotos = (err, client) => new Promise((resolve, reject) => {
   readFileStream.on('open', () => {
     console.log('SEEDING photos: readfilestream open');
     console.time('seedTime-photos');
-    readFileStream.pipe(cleanse)
-      .pipe(stream);
+    readFileStream.pipe(stream)
   });
 
   stream.on('error', (error) => console.log('error in photos stream ', error));

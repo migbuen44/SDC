@@ -2,8 +2,7 @@ node_modules
 coverage
 config/config.js
 R&R_CSV
-<<<<<<< HEAD
 raw_files
-=======
 config.js
->>>>>>> d02534c4f3ac2e851b3a6f20ed2a99c1bf088253
+ETL
+

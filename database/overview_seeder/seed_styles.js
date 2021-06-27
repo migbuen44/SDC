@@ -7,7 +7,7 @@ module.exports = (err, client) => new Promise((resolve, reject) => {
 
   const stylesCsvPath = path.join(__dirname, '../../raw_files/styles.csv');
 
-  const stream = client.query(copyFrom('COPY styles FROM STDIN CSV HEADER'));
+  const stream = client.query(copyFrom('COPY styles FROM STDIN WITH (FORMAT CSV, HEADER, NULL "null")'));
   const readFileStream = fs.createReadStream(stylesCsvPath);
 
   readFileStream.on('error', (error) => console.log('styles readFileStream error', error));
