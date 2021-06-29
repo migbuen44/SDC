@@ -4,7 +4,7 @@ const path = require('path');
 
 const seedRelated = (err, client, release) => new Promise((resolve, reject) => {
   if (err) { reject(err); }
-  const relatedCsvPath = path.join(__dirname, '../../raw_files/related.csv');
+  const relatedCsvPath = path.join(__dirname, '../../raw_files/relatedClean.csv');
   const readFileStream = fs.createReadStream(relatedCsvPath);
   const stream = client.query(copyFrom('COPY related_products FROM STDIN CSV HEADER'));
 

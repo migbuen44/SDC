@@ -7,10 +7,6 @@ const seedPhotos = require('./seed_photos');
 const seedSkus = require('./seed_skus');
 const seedRelated = require('./seed_related');
 
-const testphotos = require('../../ETL/load');
-const test = require('../../ETL/testload');
-
-
 const pool = new Pool(config);
 
 pool.connect((err, client, release) => {
@@ -20,16 +16,16 @@ pool.connect((err, client, release) => {
         .then(() => {
           seedStyles(err, client)
             .then(() => {
-              // testphotos(err, client);
               seedPhotos(err, client)
-              // seedSkus(err, client)
-                // .then(() => {
-                //   seedRelated(err, client, release);
-                // })
-                // .catch((error) => {
-                //   console.log(error);
-                //   pool.end();
-                // });
+                .then(() => {
+                  seedSkus(err, client)
+                    .then(() => {
+                      seedRelated(err, client, release);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                });
             });
         });
     });

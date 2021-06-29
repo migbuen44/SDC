@@ -12,7 +12,7 @@ module.exports = (err, client) => new Promise((resolve, reject) => {
 
   readFileStream.on('error', (error) => console.log('styles readFileStream error', error));
   readFileStream.on('open', () => {
-    console.log('readfilestream-styles open');
+    console.log('SEEDING styles: readfilestream open');
     console.time('seedTime-styles');
     readFileStream.pipe(stream);
   });

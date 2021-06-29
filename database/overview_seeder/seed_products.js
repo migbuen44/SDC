@@ -11,7 +11,7 @@ function seedProducts(err, client) {
     readFileStream.on('error', reject);
 
     readFileStream.on('open', () => {
-      console.log('readfilestream-products open');
+      console.log('SEEDING products: readfilestream open');
       console.time('seedTime-products');
       readFileStream.pipe(stream);
     });
