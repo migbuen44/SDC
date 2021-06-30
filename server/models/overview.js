@@ -17,62 +17,54 @@ module.exports = {
       callback(null, response);
     });
   },
+
   getStyles: async (callback, productId) => {
     const query = `SELECT * FROM styles WHERE product_id = ${productId}`;
-    const stylesData = await db.query(query);
-    const result = { product_id: productId, results: [] };
-    for (var i = 0; i < stylesData.rows.length; i++ ) {
-      const style = stylesData.rows[i];
-      const shapedData = {
-        style_id: style.id,
-        name: style.name,
-        original_price: style.original_price,
-        sale_price: style.sale_price,
-        'default?': style.default_style,
-        photos: [],
-        skus: {},
-      };
-      module.exports.getStyleData((err, styleData) => {
-        if (err) { callback(err); }
-        // styleData[1].rows.map((sku, i) => {
-        //   shapedData.skus[sku.id] = { quantity: sku.quantity, size: sku.size };
-        // });
-        shapedData.photos = styleData[0].rows;
-        result.results.push(shapedData);
-        // console.log(result)
-        console.log(shapedData);
-      }, style.id);
-      result.results.push(shapedData);
-    }
-    // await stylesData.rows.map((style) => {
-    // });
-    // console.log(result);
-
-    // const placeholder = {
-    //   style_id: style.id,
-    //   name: style.name,
-    //   original_price: style.original_price,
-    //   sale_price: style.sale_price,
-    //   'default?': style.default_style,
-    //   photos: [],
-    //   skus: {},
-    // };
-    // callback(null, shapedData);
-  },
-  getStyleData: (callback, styleId) => {
-    const queries = [
-      `SELECT thumbnail_url, url FROM photos WHERE style_id = '${styleId}'`,
-      `SELECT id, size, quantity FROM skus WHERE style_id = '${styleId}'`,
-    ];
-    db.query(queries.join(';'), (err, response) => {
+    db.query(query, (err, res) => {
       if (err) { callback(err); }
-      callback(null, response);
+      const stylesData = res.rows;
+      const shapedData = { product_id: productId, results: [] };
+      const iterateStyles = async () => {
+        for (let i = 0; i < stylesData.length; i += 1) {
+          const style = stylesData[i];
+          const queries = [
+            `SELECT thumbnail_url, url FROM photos WHERE style_id = '${style.id}'`,
+            `SELECT id, size, quantity FROM skus WHERE style_id = '${style.id}'`,
+          ];
+          const suppStyleData = await db.query(queries.join(';'))
+          const template = {
+            style_id: style.id,
+            name: style.name,
+            original_price: style.original_price,
+            sale_price: style.sale_price,
+            'default?': style.default_style,
+            photos: [],
+            skus: {},
+          };
+
+          for (let j = 0; j < suppStyleData[1].rows.length; j += 1) {
+            const sku = suppStyleData[1].rows[j];
+            template.skus = { [sku.id]: { quantity: sku.quantity, size: sku.size } };
+          }
+          template.photos = suppStyleData[0].rows;
+          shapedData.results.push(template);
+        }
+      };
+      iterateStyles()
+        .then(() => {
+          callback(null, shapedData);
+        });
+    });
+  },
+  getRelated: (callback, productId) => {
+    const queryString = `SELECT related_product_id FROM related_products WHERE current_product_id = ${productId}`;
+    db.query(queryString, (err, res) => {
+      if (err) { callback(err); }
+      const relatedArr = res.rows.map((ids) => ids.related_product_id);
+      callback(null, relatedArr);
     });
   },
 };
-
-
-
 
 // getStyles: (callback, productId) => {
 //   const query = `SELECT * FROM styles WHERE product_id = ${productId}`;
@@ -125,4 +117,36 @@ module.exports = {
 //     });
 //     callback(null, styleObj);
 //   });
-// },
+// },\
+
+
+
+
+
+// getStyles: async (callback, productId) => {
+//   const query = `SELECT * FROM styles WHERE product_id = ${productId}`;
+//   const stylesData = await db.query(query);
+//   const result = { product_id: productId, results: [] };
+//   for (var i = 0; i < stylesData.rows.length; i++ ) {
+//     const style = stylesData.rows[i];
+//     const shapedData = {
+//       style_id: style.id,
+//       name: style.name,
+//       original_price: style.original_price,
+//       sale_price: style.sale_price,
+//       'default?': style.default_style,
+//       photos: [],
+//       skus: {},
+//     };
+//     module.exports.getStyleData((err, styleData) => {
+//       if (err) { callback(err); }
+//       // styleData[1].rows.map((sku, i) => {
+//       //   shapedData.skus[sku.id] = { quantity: sku.quantity, size: sku.size };
+//       // });
+//       shapedData.photos = styleData[0].rows;
+//       result.results.push(shapedData);
+//       // console.log(result)
+//       console.log(shapedData);
+//     }, style.id);
+//     result.results.push(shapedData);
+//   }

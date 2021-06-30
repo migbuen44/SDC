@@ -10,5 +10,6 @@ const overview = require('./controllers/overview');
 router.get('/products', overview.getProducts);
 router.get('/products/:productId', overview.getProductById);
 router.get('/products/:productId/styles', overview.getStyles);
+router.get('/products/:productId/related', overview.getRelated);
 
 module.exports = router;

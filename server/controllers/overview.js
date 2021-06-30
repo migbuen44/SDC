@@ -17,12 +17,19 @@ module.exports = {
       res.status(200).send(dataShaped);
     }, productId);
   },
-  // 1. get styles array
   getStyles: (req, res) => {
     const { productId } = req.params;
-    overview.getStyles((err, styles) => {
+    overview.getStyles((err, response) => {
       if (err) { res.status(400).send(err); }
-      res.status(200).send(styles);
+      res.status(200).send(response);
+    }, productId);
+  },
+
+  getRelated: (req, res) => {
+    const { productId } = req.params;
+    overview.getRelated((err, related) => {
+      if (err) { res.status(400).send(err); }
+      res.status(200).send(related);
     }, productId);
   },
 };
