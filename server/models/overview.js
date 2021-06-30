@@ -2,25 +2,32 @@ const db = require('../../database/index'); // For database connection, if conne
 
 module.exports = {
   getProducts: (callback, query) => {
-    db.query(`SELECT * FROM product LIMIT ${query.count || 5} OFFSET ${query.count * (query.page - 1) || 0}`, (err, response) => {
+    const queryString = `SELECT * FROM product LIMIT ${query.count || 5} OFFSET ${query.count * (query.page - 1) || 0}`;
+    const queryStringTest = `EXPLAIN ANALYZE ${queryString}`;
+    db.query(queryStringTest, (err, response) => {
       if (err) { callback(err); }
       callback(null, response);
     });
   },
   getProductById: (callback, productId) => {
-    const query = [
+    const queryString = [
       `SELECT * FROM product WHERE id = ${productId}`,
       `SELECT feature, value FROM features WHERE product_id = ${productId}`,
     ];
-    db.query(query.join(';'), (err, response) => {
+    const queryStringTest = [
+      `EXPLAIN ANALYZE SELECT * FROM product WHERE id = ${productId}`,
+      `EXPLAIN ANALYZE SELECT feature, value FROM features WHERE product_id = ${productId}`,
+    ];
+    db.query(queryString.join(';'), (err, response) => {
       if (err) { callback(err); }
       callback(null, response);
     });
   },
 
   getStyles: async (callback, productId) => {
-    const query = `SELECT * FROM styles WHERE product_id = ${productId}`;
-    db.query(query, (err, res) => {
+    const queryString = `SELECT * FROM styles WHERE product_id = ${productId}`;
+    const queryStringTest = `EXPLAIN ANALYZE SELECT * FROM styles WHERE product_id = ${productId}`;
+    db.query(queryString, (err, res) => {
       if (err) { callback(err); }
       const stylesData = res.rows;
       const shapedData = { product_id: productId, results: [] };
