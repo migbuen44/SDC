@@ -1,3 +1,3 @@
 exports.overview = require('./overview.js');
-exports.qAnda = require('./qAnda.js');
+exports.q_and_a = require('./q_and_a.js');
 exports.reviews = require('./reviews.js');
