@@ -1,10 +1,11 @@
 const { Pool } = require('pg');
-const config = require('../config/config.js');
+const config = require('../config/config');
 
 const pool = new Pool(config);
 
 pool.connect((err) => {
-  err ? console.error(err) : console.log('Connected to database!');
+  if (err) { console.error(err); }
+  // err ? console.error(err) : console.log('Connected to database!');
 });
 
 // pool.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {

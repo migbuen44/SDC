@@ -4,7 +4,7 @@ module.exports = {
   getProducts: (callback, query) => {
     const queryString = `SELECT * FROM product LIMIT ${query.count || 5} OFFSET ${query.count * (query.page - 1) || 0}`;
     const queryStringTest = `EXPLAIN ANALYZE ${queryString}`;
-    db.query(queryStringTest, (err, response) => {
+    db.query(queryString, (err, response) => {
       if (err) { callback(err); }
       callback(null, response);
     });

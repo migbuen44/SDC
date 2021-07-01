@@ -1,5 +1,5 @@
 module.exports = {
-  postgre: {
+  postgres: {
     image: 'postgres',
     tag: '12.3-alpine',
     ports: [5432],
