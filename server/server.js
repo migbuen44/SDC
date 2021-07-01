@@ -14,7 +14,3 @@ app.use(morgan('dev'));
 app.use('/api', router);
 
 module.exports = app;
-
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
-});
