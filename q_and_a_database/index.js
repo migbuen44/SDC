@@ -4,13 +4,13 @@ const config = require('./config.js');
 const pool = new Pool(config);
 
 // console.log('database connected!');
-pool.connect(err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('database connected');
-  }
-});
+// pool.connect(err => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log('database connected');
+//   }
+// });
 
 const getQuestions = (product_id, count, callback) => {
   let queryString = `SELECT * FROM questions WHERE product_id = ${product_id} limit ${count};`;//add index to product_id in postgres
