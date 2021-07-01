@@ -128,12 +128,15 @@ router.put('/qa/answers/:answer_id/report', (req, res) => {
   });
 });
 const controller = require('./controllers/reviewsJG');
+const overview = require('./controllers/overview');
+
+// const controller = require('./controllers/reviewsJG');
 
 
-// router.get('/o', controllers.overview.get)
-//   .get('/q', controllers.qAnda.get)
-//   .get('/r', controllers.reviews.get);
-
+router.get('/products', overview.getProducts);
+router.get('/products/:productId', overview.getProductById);
+router.get('/products/:productId/styles', overview.getStyles);
+router.get('/products/:productId/related', overview.getRelated);
 
 router
 .route('/reviews/meta')
