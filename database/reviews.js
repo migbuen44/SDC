@@ -25,11 +25,11 @@ create table ${reviewsTable} (
   summary varchar(250) not null,
   body varchar(1000) not null,
   recommend boolean not null,
-  reported boolean not null,
+  reported boolean not null default false,
   reviewer_name varchar(50) not null,
   reviewer_email varchar(50) not null,
   response varchar(1000) not null,
-  helpfulness integer not null
+  helpfulness integer not null default 0
   );`;
 
 client.query(createReviews).then(() => {
