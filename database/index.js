@@ -12,8 +12,8 @@ const pool = new Pool(config);
 
 // module.exports = pool;
 pool.connect((err) => {
-  if (err) { console.error(err); }
-  // err ? console.error(err) : console.log('Connected to database!');
+
+  err ? console.error(err) : console.log('Connected to database!');
 });
 
 // pool.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
