@@ -88,7 +88,7 @@ SDC is a legacy API meant to serve a product page web app. This project was crea
 
 ### Request
 
-`POST /qa/questions/<question_id>/answers`
+`GET /qa/questions/<question_id>/answers`
 
     http://localhost:3001/api/qa/questions/2/answers
 
@@ -135,6 +135,270 @@ SDC is a legacy API meant to serve a product page web app. This project was crea
 ### Response
 
     Status: 200 OK
+
+## Mark question helpful
+
+### Request
+
+`PUT /qa/questions/<question_id>/helpful`
+
+    http://localhost:3001/api/qa/questions/2/helpful
+
+### Response
+
+    Status: 200 OK
+
+## Mark answer helpful
+
+### Request
+
+`PUT /qa/answers/<answer_id>/helpful`
+
+    http://localhost:3001/api/qa/answers/2/helpful
+
+### Response
+
+    Status: 200 OK
+
+## Report question
+
+### Request
+
+`PUT /qa/questions/<question_id>/report`
+
+    http://localhost:3001/api/qa/questions/2/report
+
+### Response
+
+    Status: 200 OK
+
+## Report answer
+
+### Request
+
+`PUT /qa/answers/<answer_id>/report`
+
+    http://localhost:3001/api/qa/answers/2/report
+
+### Response
+
+    Status: 200 OK
+
+## Get initital list of products
+
+### Request
+
+`GET /products`
+
+    http://localhost:3001/api/products
+
+### Response
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Camo Onesie",
+        "slogan": "Blend in to your crowd",
+        "description": "The So Fatigues will wake you up and fit you in. This high energy camo will have you blending in to even the wildest surroundings.",
+        "category": "Jackets",
+        "default_price": "140"
+    }
+]
+```
+
+## Get related products with info
+
+### Request
+
+`GET /related/products/<productId>`
+
+    http://localhost:3001/api/related/products/3
+
+### Response
+
+```json
+[
+    {
+        "id": 3,
+        "name": "Morning Joggers",
+        "slogan": "Make yourself a morning person",
+        "description": "Whether you're a morning person or not.  Whether you're gym bound or not.  Everyone looks good in joggers.",
+        "category": "Pants",
+        "default_price": "40",
+        "thumbnail_url": "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80"
+    }
+]
+```
+
+## Get specific product info
+
+### Request
+
+`GET /products/<product_id>`
+
+    http://localhost:3001/api/products/3
+
+### Response
+
+```json
+{
+    "id": 3,
+    "name": "Morning Joggers",
+    "slogan": "Make yourself a morning person",
+    "description": "Whether you're a morning person or not.  Whether you're gym bound or not.  Everyone looks good in joggers.",
+    "category": "Pants",
+    "default_price": "40",
+    "thumbnail_url": "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+    "features": [
+        {
+            "feature": "Fabric",
+            "value": "100% Cotton"
+        },
+        {
+            "feature": "Cut",
+            "value": "Skinny"
+        }
+    ]
+}
+```
+
+## Get specific product styles info
+
+## Request
+
+`GET /products/<product_id>/styles`
+
+    http://localhost:3001/api/products/3/styles
+
+## Response
+
+```json
+{
+    "product_id": "3",
+    "results": [
+      {
+            "style_id": 16,
+            "name": "White",
+            "original_price": 40,
+            "sale_price": null,
+            "default?": false,
+            "photos": [
+                {
+                    "thumbnail_url": "https://images.unsplash.com/photo-1510390099355-23e690d8129d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+                    "url": "https://images.unsplash.com/photo-1510390099355-23e690d8129d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80"
+                }
+            ],
+            "skus": {
+                "72": {
+                    "quantity": 6,
+                    "size": "XXL"
+                }
+            }
+        }
+    ]
+}
+```
+
+## Get specific product related ids
+
+### Request
+
+`GET /products/<product_id>/related`
+
+    http://localhost:3001/api/products/3/related
+
+### Response
+
+```json
+[
+    5,
+    9,
+    7,
+    2,
+    1
+]
+```
+
+## Get specific product reviews
+
+### Request
+
+`GET /reviews/<product_id>`
+
+    http://localhost:3001/api/reviews/1
+
+### Response
+
+```json
+[
+    {
+        "product_id": 1,
+        "rating": 5,
+        "date": "1596080481467",
+        "summary": "This product was great!",
+        "body": "I really did or did not like this product based on whether it was sustainably sourced.  Then I found out that its made from nothing at all.",
+        "recommend": true,
+        "reported": false,
+        "reviewer_name": "funtime",
+        "reviewer_email": "first.last@gmail.com",
+        "response": "null",
+        "helpfulness": 8,
+        "id": 1,
+        "photos": []
+    }
+]
+```
+
+## Mark review helpful
+
+### Request
+
+`PUT /reviews/<review_id>/helpful`
+
+    http://localhost:3001/api/reviews/1/helpful
+
+### Response
+
+    Status: 200 OK
+
+## Report review
+
+### Request
+
+`PUT /reviews/<review_id>/report`
+
+    http://localhost:3001/api/reviews/1/report
+
+### Response
+
+    Status: 200 OK
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
