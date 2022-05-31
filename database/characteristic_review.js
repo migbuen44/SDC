@@ -18,8 +18,8 @@ const characteristicReviewsTable = 'character_reviews';
 // id,characteristic_id,review_id,value
 
 const createCharacteristicReviews = `
-drop table if exists ${characteristicReviewsTable};
-create table ${characteristicReviewsTable} (
+drop table if exists character_reviews;
+create table character_reviews (
   id serial primary key,
   characteristic_id integer not null,
   review_id integer not null,
@@ -30,7 +30,7 @@ client.query(createCharacteristicReviews).then(() => {
   console.log(`Successfully create lemon`);
 });
 
-const stream = client.query(copyFrom(`COPY ${characteristicReviewsTable} FROM STDIN DELIMITER ',' CSV HEADER`));
+const stream = client.query(copyFrom(`COPY character_reviews FROM STDIN DELIMITER ',' CSV HEADER`));
 const fileStream = fs.createReadStream(csvPath);
 
 console.time('execution time');
@@ -46,11 +46,11 @@ stream.on('pipe', () => {
 });
 
 const alterTable = `
-alter table ${characteristicReviewsTable}
+alter table character_reviews
 DROP COLUMN id,
 ADD COLUMN id SERIAL PRIMARY KEY;
 DROP INDEX IF EXISTS characteristic_reviews_index;
-CREATE INDEX IF NOT EXISTS characteristic_reviews_index ON ${characteristicReviewsTable}(review_id);`;
+CREATE INDEX IF NOT EXISTS characteristic_reviews_index ON character_reviews(review_id);`;
 
 stream.on('finish', () => {
   console.log(`DATA HAS BEEN SUCCESSFULLY LOADED IN ${characteristicReviewsTable}`);

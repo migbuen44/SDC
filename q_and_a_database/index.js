@@ -158,5 +158,5 @@ module.exports = {
   addQuestionHelpful,
   addAnswerHelpful,
   reportQuestion,
-  reportAnswer
+  reportAnswer,
 };

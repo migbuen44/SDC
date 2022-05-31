@@ -8,7 +8,7 @@ const reviewsJG = {
     // eslint-disable-next-line camelcase
     const queryReviewStr = `SELECT * FROM reviews WHERE product_id = ${product_id}`;
 
-    const queryPhoto = 'SELECT * FROM reviews_photos';
+    // const queryPhoto = `SELECT * FROM reviews_photos WHERE review_id = ${}`;
 
     const inner = (t1, t2) => {
       const reviews = [];
@@ -32,15 +32,46 @@ const reviewsJG = {
     client.query(queryReviewStr, (err1, reviewResult) => {
       if (err1) {
         callback(err1, null);
+      } else {
+        const resultRows = reviewResult.rows;
+
+        let iterateResultAsync = async () => {
+            for (let review of resultRows) {
+              console.log('reviewId: ', review.id);
+              queryString = `SELECT * FROM reviews_photos WHERE review_id = ${review.id}`;
+              let result2 = await client.query(queryString)
+              review.photos = result2.rows;
+            };
+        };
+
+        iterateResultAsync()
+          .then(() => {
+            callback(null, resultRows);
+          });
       }
-      client.query(queryPhoto, (err2, photoReview) => {
-        if (err2) {
-          callback(err2, null);
-        } else {
-          const result = inner(reviewResult.rows, photoReview.rows);
-          callback(null, result);
-        }
-      });
+      // client.query(queryPhoto, (err2, photoReview) => {
+      //   if (err2) {
+      //     callback(err2, null);
+      //   } else {
+      //     // const result = inner(reviewResult.rows, photoReview.rows);
+      //     // callback(null, result);
+      //     console.log()
+      //     // const resultRows = photoReview.rows;
+      //     // console.log('resultRows:', resultRows);
+      //   // let iterateResultAsync = async () => {
+      //   //     for (let answer of resultRows) {
+      //   //       queryString = `SELECT url FROM answers_photos WHERE answer_id = ${answer.id}`;
+      //   //       let result2 = await pool.query(queryString)
+      //   //       answer.photos = result2.rows;
+      //   //     };
+      //   // };
+
+      //   // iterateResultAsync()
+      //   //   .then(() => {
+      //   //     callback(null, resultRows);
+      //   //   });
+      //   }
+      // });
     });
   },
 

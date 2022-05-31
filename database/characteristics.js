@@ -16,8 +16,8 @@ const csvPath = path.join(__dirname, '../R&R_CSV/characteristics.csv');
 const characteristicsTable = 'characteristics';
 // id,product_id,name
 const createCharacteristics = `
-drop table if exists ${characteristicsTable};
-create table ${characteristicsTable} (
+drop table if exists characteristics;
+create table characteristics (
   id serial primary key,
   product_id integer not null,
   name text not null
@@ -41,11 +41,11 @@ stream.on('error', (err) => {
 });
 
 const alterTable = `
-alter table ${characteristicsTable}
+alter table characteristics
 DROP COLUMN id,
 ADD COLUMN id SERIAL PRIMARY KEY;
 DROP INDEX IF EXISTS characteristics_index;
-CREATE INDEX IF NOT EXISTS characteristics_index ON ${characteristicsTable}(product_id);`;
+CREATE INDEX IF NOT EXISTS characteristics_index ON characteristics(product_id);`;
 
 stream.on('finish', () => {
   console.log(`DATA HAS BEEN SUCCESSFULLY LOADED IN ${characteristicsTable}`);

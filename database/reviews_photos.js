@@ -17,8 +17,8 @@ const reviewsPhotosTable = 'reviews_photos';
 // id,review_id,url
 
 const createReviewsPhotos = `
-drop table if exists ${reviewsPhotosTable};
-create table ${reviewsPhotosTable} (
+drop table if exists reviews_photos;
+create table reviews_photos (
   id serial primary key,
   review_id integer not null,
   url text not null
@@ -42,11 +42,11 @@ stream.on('error', (err) => {
 });
 
 const alterTable = `
-alter table ${reviewsPhotosTable}
+alter table reviews_photos
 DROP COLUMN id,
 ADD COLUMN id SERIAL PRIMARY KEY;
 DROP INDEX IF EXISTS reviews_photos_index;
-CREATE INDEX IF NOT EXISTS reviews_photos_index ON ${reviewsPhotosTable}(review_id);`;
+CREATE INDEX IF NOT EXISTS reviews_photos_index ON reviews_photos(review_id);`;
 
 stream.on('finish', () => {
   console.log(`DATA HAS BEEN SUCCESSFULLY LOADED IN ${reviewsPhotosTable}`);

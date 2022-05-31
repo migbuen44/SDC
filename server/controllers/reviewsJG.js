@@ -5,6 +5,7 @@ const controller = {
 
   get: (req, res) => {
     models.getReviews(req, (err, result) => {
+      console.log('err: ', err);
       err ? res.status(400).send(err) : res.status(200).send(result);
     });
   },

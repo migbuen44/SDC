@@ -16,8 +16,8 @@ const csvPath = path.join(__dirname, '../R&R_CSV/reviews.csv');
 const reviewsTable = 'reviews';
 
 const createReviews = `
-drop table if exists ${reviewsTable};
-create table ${reviewsTable} (
+drop table if exists reviews;
+create table reviews (
   id serial primary key,
   product_id integer not null,
   rating integer not null,
@@ -50,11 +50,11 @@ stream.on('error', (err) => {
 });
 
 const alterTable = `
-alter table ${reviewsTable}
+alter table reviews
 DROP COLUMN id,
 ADD COLUMN id SERIAL PRIMARY KEY;
 DROP INDEX IF EXISTS reviews_index;
-CREATE INDEX IF NOT EXISTS reviews_index ON ${reviewsTable}(product_id);`;
+CREATE INDEX IF NOT EXISTS reviews_index ON reviews(product_id);`;
 
 stream.on('finish', () => {
   console.log(`DATA HAS BEEN SUCCESSFULLY LOADED IN ${reviewsTable}`);

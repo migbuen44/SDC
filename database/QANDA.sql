@@ -42,9 +42,11 @@ COPY answers_photos FROM '/Users/miguelbuenviaje/SDC/q_and_a_CSV/answers_photos.
 
 SELECT setval('answers_photos_id_seq', (SELECT MAX(id)+1 FROM answers_photos), false);
 
--- create index idx_questions_product_id on questions(product_id);
---  create index idx_answers_question_id on answers(question_id);
--- create index idx_answers_photos_answer_id on answers_photos(answer_id);
+create index idx_questions_product_id on questions(product_id);
+
+create index idx_answers_question_id on answers(question_id);
+
+create index idx_answers_photos_answer_id on answers_photos(answer_id);
 
 -- CREATE DATABASE qanda;
 
