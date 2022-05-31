@@ -46,7 +46,7 @@ module.exports = {
   },
   addAnswer: (req, res) => {
     const { question_id } = req.params;
-    const {
+    let {
       body, date_written, name, email, photos,
     } = req.body;
     let dt = new Date();
